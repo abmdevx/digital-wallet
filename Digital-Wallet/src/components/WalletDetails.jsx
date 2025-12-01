@@ -1,16 +1,15 @@
 import React, { useState , useEffect } from "react";
 import { Eye, EyeOff, Copy, Send, ArrowUpRight, ArrowDownLeft, PencilIcon, Trash2Icon, Link , Edit3 , Trash2 } from "lucide-react";
-import { useParams } from "react-router-dom";
-import w_service from "../appwrite/walletServices";
 import EditWalletModal from "./Shared/EditModal"
 import DeleteWalletModal from "./Shared/DeleteModal"
+import SendMoneyUI from "./Transaction";
 
 function WalletDetailView({ wallet, setSelectedWallet , updateWallet, deleteWallet}) {
   const [showBalance, setShowBalance] = useState(true);
 
   const [showEditModal, setShowEditModal] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
-  // if (!displayWallet) return <div className="text-white">Loading...</div>;
+  const [showSendModal, setShowSendModal] = useState(false);
 
   const formatBalance = (amount) => {
   const value = Number(amount) || 0;
@@ -101,14 +100,18 @@ function WalletDetailView({ wallet, setSelectedWallet , updateWallet, deleteWall
             <ArrowDownLeft className="w-6 h-6 mb-2" />
             <span className="text-sm font-medium">Receive</span>
           </button>
-          <button className="flex flex-col items-center p-4 bg-gradient-to-r from-blue-500 to-purple-500 rounded-2xl text-white hover:shadow-lg transition-all">
+          <button
+            onClick={() => setShowSendModal(true)}
+            className="flex flex-col items-center p-4 bg-gradient-to-r from-blue-500 to-purple-500 rounded-2xl text-white hover:shadow-lg transition-all"
+          >
             <Send className="w-6 h-6 mb-2" />
             <span className="text-sm font-medium">Send</span>
           </button>
+
+          {showSendModal && (
+            <SendMoneyUI open={showSendModal} setOpen={setShowSendModal} />
+          )}
         </div>
-
-      
-
 
       {/* Recent Transactions */}
 <div className="backdrop-blur-xl bg-white/10 rounded-3xl p-6 border border-white/20 shadow-2xl mt-7">
